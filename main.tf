@@ -29,3 +29,12 @@ resource "aws_subnet" "publicsubnet1" {
      Name = "Public-Sub1"
   }
 }
+
+resource "aws_vpc" "vpc2" {
+  cidr_block = "172.17.0.0/16"
+  instance_tenancy = "default"
+  enable_dns_hostnames = "true"
+  tags = {
+     Name = "VPC2"
+  }
+}
