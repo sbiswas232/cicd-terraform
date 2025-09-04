@@ -8,33 +8,26 @@ terraform {
 }
 
 provider "aws" {
-  region = "ap-southeast-1"
+  region = var.region
 }
 
-resource "aws_vpc" "vpc1" {
-  cidr_block = "172.16.0.0/16"
-  instance_tenancy = "default"
-  enable_dns_hostnames = "true"
+resource "aws_vpc" "vpc" {
+  cidr_block           = var.vpc_cidr
+  instance_tenancy     = "default"
+  enable_dns_hostnames = true
+  enable_dns_support   = true
   tags = {
-     Name = "VPC1"
+     Name = "${var.project}-vpc"
   }
 }
 
-resource "aws_subnet" "publicsubnet1" {
-  vpc_id     = aws_vpc.vpc1.id
-  cidr_block = "172.16.10.0/24"
-  map_public_ip_on_launch = "true"
-  availability_zone = "ap-southeast-1a"
+resource "aws_subnet" "subnet" {
+  count             = 2
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = cidrsubnet(aws_vpc.vpc.cidr_block, 4, count.index + 1)
+  availability_zone = data.aws_availability_zones.available_zone.names[count.index]
   tags = {
-     Name = "Public-Sub1"
+     Name = "${var.project}-subnet${count.index + 1}
   }
 }
 
-resource "aws_vpc" "vpc2" {
-  cidr_block = "172.17.0.0/16"
-  instance_tenancy = "default"
-  enable_dns_hostnames = "true"
-  tags = {
-     Name = "VPC2"
-  }
-}
