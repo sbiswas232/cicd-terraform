@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.16"
+    }
+  }
+}
+
 provider "aws" {
   region = var.region
 }
@@ -18,7 +27,7 @@ resource "aws_subnet" "subnet" {
   cidr_block        = cidrsubnet(aws_vpc.vpc.cidr_block, 4, count.index + 1)
   availability_zone = data.aws_availability_zones.available_zone.names[count.index]
   tags = {
-     Name = "${var.project}-subnet${count.index + 1}
+     Name = "${var.project}-subnet${count.index + 1}"
   }
 }
 
