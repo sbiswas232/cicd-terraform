@@ -1,10 +1,11 @@
-name: Terraform Deployment
+name: terraform_workflow_pipeline
 on: 
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+  pull_request: [ "main" ]
+
 jobs:
-  terraform-ci:
+  terraform_ci:
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
