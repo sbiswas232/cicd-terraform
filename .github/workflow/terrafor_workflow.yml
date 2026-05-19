@@ -2,7 +2,8 @@ name: terraform_workflow_pipeline
 on: 
   push:
     branches: [ "main" ]
-  pull_request: [ "main" ]
+  pull_request: 
+    branches: [ "main" ]
 
 jobs:
   terraform_ci:
